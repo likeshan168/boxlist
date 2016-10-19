@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BoxList.CommonLib;
+using BoxList.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,5 +25,17 @@ namespace BoxList
         {
             InitializeComponent();
         }
+
+        private void code_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(code.Text))
+            {
+                bool isCheckIn = (bool)rbtnCheckIn.IsChecked;
+                var printLabel = new DbOperation().GetPrintLabel(isCheckIn,code.Text);
+
+                //new PrintHelper().PrintVisual(isCheckIn ? boxImage1 : boxImage2);
+            }
+        }
+
     }
 }
