@@ -13,10 +13,6 @@ namespace BoxList
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        //private bool isCheckIn;
-        //private PrintLabelEnhanced printLabel;
-        //private string barCode;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,7 +30,7 @@ namespace BoxList
                     {
                         if (rst.Result)
                         {
-                            PrintLabel();
+                            //PrintLabel();
                         }
                     });
 
@@ -44,8 +40,6 @@ namespace BoxList
 
         private bool SetDataContext()
         {
-
-
             Dispatcher.BeginInvoke(new Func<bool>(() =>
             {
                 Console.WriteLine("获取数据...!");
@@ -56,7 +50,9 @@ namespace BoxList
                 var printLabel = new DbOperation().GetPrintLabel(isCheckIn, barCode);
 
                 if (printLabel == null)
+                {
                     return false;
+                }
 
                 if (isCheckIn)
                 {

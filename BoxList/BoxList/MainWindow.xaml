@@ -15,6 +15,7 @@
         <blib:ImageNameToPath x:Key="itop"></blib:ImageNameToPath>
         <blib:BaseBarCodeToPath x:Key="btop"></blib:BaseBarCodeToPath>
         <blib:JingDongBarCodeToPath x:Key="jtop"></blib:JingDongBarCodeToPath>
+        <blib:MultipleBindingToVisibility x:Key="mtov"></blib:MultipleBindingToVisibility>
         <DataTemplate x:Key="printLst">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding ServerName}"></TextBlock>
@@ -83,7 +84,13 @@
             </GroupBox>
         </StackPanel>
         <Grid Grid.Row="1" Margin="5,0,5,5">
-            <Grid Width="9cm" Height="5cm" x:Name="boxImage2" Visibility="{Binding Path=IsChecked,ElementName=rbtnCheckOut,Converter={StaticResource ResourceKey=btov}}">
+            <Grid Width="9cm" Height="5cm" x:Name="boxImage2">
+                <Grid.Visibility>
+                    <MultiBinding Converter="{StaticResource ResourceKey=mtov}">
+                        <Binding Path="IsChecked" ElementName="rbtnCheckOut"></Binding>
+                        <Binding Path="Text" ElementName="chineseName"></Binding>
+                    </MultiBinding>
+                </Grid.Visibility>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="3*"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
@@ -107,7 +114,7 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Image Source="Images/Logo.png" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></Image>
-                <TextBlock Text="{Binding Path=中文名称,Mode=OneWay}" Style="{StaticResource AddressStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"></TextBlock>
+                <TextBlock x:Name="chineseName" Text="{Binding Path=中文名称,Mode=OneWay}" Style="{StaticResource AddressStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"></TextBlock>
                 <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
 
                     <TextBlock Text="{Binding Path=货号,Mode=OneWay}" FontWeight="Bold" Margin="5 0 5 0" FontSize="12"></TextBlock>
@@ -173,7 +180,14 @@
 
             </Grid>
 
-            <Grid Width="7cm" Height="4cm" x:Name="boxImage1" Visibility="{Binding Path=IsChecked,ElementName=rbtnCheckIn,Converter={StaticResource ResourceKey=btov}}">
+            <Grid Width="7cm" Height="4cm" x:Name="boxImage1" >
+                <!--Visibility="{Binding Path=IsChecked,ElementName=rbtnCheckIn,Converter={StaticResource ResourceKey=btov}}"-->
+                <Grid.Visibility>
+                    <MultiBinding Converter="{StaticResource ResourceKey=mtov}">
+                        <Binding Path="IsChecked" ElementName="rbtnCheckIn"></Binding>
+                        <Binding Path="Text" ElementName="englishName"></Binding>
+                    </MultiBinding>
+                </Grid.Visibility>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="3*"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
@@ -195,7 +209,7 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Image Source="Images/Logo.png" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></Image>
-                <TextBlock Text="{Binding Path=英文名称,Mode=OneWay}" Style="{StaticResource NameStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9"></TextBlock>
+                <TextBlock x:Name="englishName" Text="{Binding Path=英文名称,Mode=OneWay}" Style="{StaticResource NameStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9"></TextBlock>
 
                 <TextBlock FontWeight="Bold" Margin="5 0 5 0" FontSize="9" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                     <TextBlock.Text>

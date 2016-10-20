@@ -87,6 +87,7 @@
     <Compile Include="BusinessLib\Constants.cs" />
     <Compile Include="BusinessLib\ImageNameToPath.cs" />
     <Compile Include="BusinessLib\JingDongBarCodeToPath.cs" />
+    <Compile Include="BusinessLib\MultipleBindingToVisibility.cs" />
     <Compile Include="CommonLib\ConfigHelper.cs" />
     <Compile Include="CommonLib\DBAccess.cs" />
     <Compile Include="Models\PrintLabelEnhanced.cs" />
