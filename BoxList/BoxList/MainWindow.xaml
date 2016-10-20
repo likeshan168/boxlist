@@ -10,9 +10,11 @@
         Title="扫码工具" Height="350" Width="525">
     <Window.Resources>
         <ObjectDataProvider x:Key="printer" ObjectType="{x:Type comlib:PrintHelper}" MethodName="GetLocalPrinters">
-
         </ObjectDataProvider>
         <blib:BoolToVisiblityConverter x:Key="btov"></blib:BoolToVisiblityConverter>
+        <blib:ImageNameToPath x:Key="itop"></blib:ImageNameToPath>
+        <blib:BaseBarCodeToPath x:Key="btop"></blib:BaseBarCodeToPath>
+        <blib:JingDongBarCodeToPath x:Key="jtop"></blib:JingDongBarCodeToPath>
         <DataTemplate x:Key="printLst">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding ServerName}"></TextBlock>
@@ -57,6 +59,7 @@
                 <Setter Property="FontSize" Value="9"></Setter>
             </Style.Setters>
         </Style>
+       
 
     </Window.Resources>
     <Grid Margin="5">
@@ -73,9 +76,9 @@
                     <RadioButton x:Name="rbtnCheckIn" GroupName="scan" VerticalAlignment="Center" Margin="2" IsChecked="True">入库扫码</RadioButton>
                     <RadioButton x:Name="rbtnCheckOut" GroupName="scan" VerticalAlignment="Center" Margin="2">出库扫码</RadioButton>
                     <TextBox x:Name="code" Height="23" Width="200" Margin="2" TextChanged="code_TextChanged"></TextBox>
-                    <!--<ComboBox x:Name="printList" ItemsSource="{Binding Source={StaticResource printer},Mode=OneWay}"></ComboBox>-->
-                    <!--<Button x:Name="btnChoosePrinter" Content="选择打印机" Click="btnChoosePrinter_Click"></Button>-->
-                        
+                    <TextBlock x:Name="Msg" Text="扫码打印标签">
+                      
+                    </TextBlock>
                 </StackPanel>
             </GroupBox>
         </StackPanel>
@@ -103,18 +106,18 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Image Source="Images/image001.png" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></Image>
-                <TextBlock Text="女士双蝴蝶结中筒雪地靴" Style="{StaticResource AddressStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"></TextBlock>
+                <Image Source="Images/Logo.png" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></Image>
+                <TextBlock Text="{Binding Path=中文名称,Mode=OneWay}" Style="{StaticResource AddressStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"></TextBlock>
                 <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
 
-                    <TextBlock Text="OB032" FontWeight="Bold" Margin="5 0 5 0" FontSize="12"></TextBlock>
+                    <TextBlock Text="{Binding Path=货号,Mode=OneWay}" FontWeight="Bold" Margin="5 0 5 0" FontSize="12"></TextBlock>
                     <TextBlock Text="产地：中国广东"  VerticalAlignment="Bottom" FontSize="10" Margin="5 0 0 0"></TextBlock>
                 </StackPanel>
-                <Image Source="Images/image007.png" Grid.Row="3" Grid.Column="0" Grid.RowSpan="6" Width="80" Height="80"></Image>
-                <TextBlock Text="咖啡色豹纹" Style="{StaticResource ColorStyle}" Grid.Row="3" Grid.Column="1" Grid.RowSpan="3"></TextBlock>
-                <TextBlock Text="37" Style="{StaticResource SizeStyle}" Grid.Row="6" Grid.Column="1" Grid.RowSpan="3"></TextBlock>
+                <Image Source="{Binding Path=鞋图名称,Mode=OneWay,Converter={StaticResource itop}}" Grid.Row="3" Grid.Column="0" Grid.RowSpan="6" Width="80" Height="80"></Image>
+                <TextBlock Text="{Binding Path=颜色,Mode=OneWay}" Style="{StaticResource ColorStyle}" Grid.Row="3" Grid.Column="1" Grid.RowSpan="3"></TextBlock>
+                <TextBlock Text="{Binding Path=EU,Mode=OneWay}" Style="{StaticResource SizeStyle}" Grid.Row="6" Grid.Column="1" Grid.RowSpan="3"></TextBlock>
 
-                <Image Source="Images/image005.png" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="7" Grid.RowSpan="2"></Image>
+                <Image Source="{Binding Path=京东码,Mode=OneWay,Converter={StaticResource jtop}}" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="7" Grid.RowSpan="2"></Image>
 
                 <Grid Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="7" Grid.RowSpan="4">
                     <Grid.Resources>
@@ -153,11 +156,12 @@
                     <TextBlock Text="USA" Grid.Row="0" Grid.Column="2"></TextBlock>
                     <TextBlock Text="CM" Grid.Row="0" Grid.Column="3"></TextBlock>
                     <TextBlock Text="INCHES" Grid.Row="0" Grid.Column="4"></TextBlock>
-                    <TextBlock Text="4M/6L" Grid.Row="1" Grid.Column="0"></TextBlock>
-                    <TextBlock Text="37" Grid.Row="1" Grid.Column="1"></TextBlock>
-                    <TextBlock Text="5/M" Grid.Row="1" Grid.Column="2"></TextBlock>
-                    <TextBlock Text="23.1" Grid.Row="1" Grid.Column="3"></TextBlock>
-                    <TextBlock Text="6" Grid.Row="1" Grid.Column="4"></TextBlock>
+                    
+                    <TextBlock Text="{Binding Path=AUS,Mode=OneWay}" Grid.Row="1" Grid.Column="0"></TextBlock>
+                    <TextBlock Text="{Binding Path=EU,Mode=OneWay}" Grid.Row="1" Grid.Column="1"></TextBlock>
+                    <TextBlock Text="{Binding Path=USA,Mode=OneWay}" Grid.Row="1" Grid.Column="2"></TextBlock>
+                    <TextBlock Text="{Binding Path=CM,Mode=OneWay}" Grid.Row="1" Grid.Column="3"></TextBlock>
+                    <TextBlock Text="{Binding Path=Inches,Mode=OneWay}" Grid.Row="1" Grid.Column="4"></TextBlock>
                 </Grid>
 
                 <TextBlock Text="代理商：" Grid.Row="6" Grid.Column="3" Style="{StaticResource AddressStyle}"></TextBlock>
@@ -190,16 +194,23 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Image Source="Images/image001.png" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></Image>
-                <TextBlock Text="men's NAPPA moccasin" Style="{StaticResource NameStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9"></TextBlock>
+                <Image Source="Images/Logo.png" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></Image>
+                <TextBlock Text="{Binding Path=英文名称,Mode=OneWay}" Style="{StaticResource NameStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9"></TextBlock>
 
-                <TextBlock Text="OB032/BROWN" FontWeight="Bold" Margin="5 0 5 0" FontSize="9" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"></TextBlock>
+                <TextBlock FontWeight="Bold" Margin="5 0 5 0" FontSize="9" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}/{1}" >
+                            <Binding Path="货号" Mode="OneWay"></Binding>
+                            <Binding Path="英文颜色" Mode="OneWay"></Binding>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
 
 
-                <Image Source="Images/image007.png" Grid.Row="3" Grid.Column="0" Grid.RowSpan="3" Width="50" Height="50"></Image>
-                <TextBlock Text="37" Style="{StaticResource SizeStyle}" Grid.Row="3" Grid.Column="1" Grid.RowSpan="3"></TextBlock>
+                <Image Source="{Binding Path=鞋图名称,Mode=OneWay,Converter={StaticResource itop}}" Grid.Row="3" Grid.Column="0" Grid.RowSpan="3" Width="50" Height="50"></Image>
+                <TextBlock Text="{Binding Path=EU,Mode=OneWay}" Style="{StaticResource SizeStyle}" Grid.Row="3" Grid.Column="1" Grid.RowSpan="3"></TextBlock>
 
-                <Image Source="Images/image005.png" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="7" Grid.RowSpan="2"></Image>
+                <Image Source="{Binding Path=条形码,Mode=OneWay,Converter={StaticResource btop}}" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="7" Grid.RowSpan="2"></Image>
 
                 <Grid Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="7" Grid.RowSpan="4" Margin="1">
                     <Grid.Resources>
@@ -238,11 +249,11 @@
                     <TextBlock Text="USA" Grid.Row="0" Grid.Column="2"></TextBlock>
                     <TextBlock Text="CM" Grid.Row="0" Grid.Column="3"></TextBlock>
                     <TextBlock Text="INCHES" Grid.Row="0" Grid.Column="4"></TextBlock>
-                    <TextBlock Text="4M/6L" Grid.Row="1" Grid.Column="0"></TextBlock>
-                    <TextBlock Text="37" Grid.Row="1" Grid.Column="1"></TextBlock>
-                    <TextBlock Text="5/M" Grid.Row="1" Grid.Column="2"></TextBlock>
-                    <TextBlock Text="23.1" Grid.Row="1" Grid.Column="3"></TextBlock>
-                    <TextBlock Text="6" Grid.Row="1" Grid.Column="4"></TextBlock>
+                    <TextBlock Text="{Binding Path=AUS,Mode=OneWay}" Grid.Row="1" Grid.Column="0"></TextBlock>
+                    <TextBlock Text="{Binding Path=EU,Mode=OneWay}" Grid.Row="1" Grid.Column="1"></TextBlock>
+                    <TextBlock Text="{Binding Path=USA,Mode=OneWay}" Grid.Row="1" Grid.Column="2"></TextBlock>
+                    <TextBlock Text="{Binding Path=CM,Mode=OneWay}" Grid.Row="1" Grid.Column="3"></TextBlock>
+                    <TextBlock Text="{Binding Path=Inches,Mode=OneWay}" Grid.Row="1" Grid.Column="4"></TextBlock>
                 </Grid>
 
 
