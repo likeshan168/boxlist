@@ -30,7 +30,7 @@
         </Style>
         <Style x:Key="ColorStyle" TargetType="TextBlock">
             <Style.Setters>
-                <Setter Property="FontSize" Value="16" ></Setter>
+                <Setter Property="FontSize" Value="15.5" ></Setter>
                 <Setter Property="FontWeight" Value="Bold" ></Setter>
                 <Setter Property="VerticalAlignment" Value="Center"></Setter>
                 <Setter Property="HorizontalAlignment" Value="Center"></Setter>
@@ -60,7 +60,14 @@
                 <Setter Property="FontSize" Value="9"></Setter>
             </Style.Setters>
         </Style>
-       
+        <Style x:Key="NameStyle2" TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                <Setter Property="FontWeight" Value="Bold"></Setter>
+                <Setter Property="FontSize" Value="10"></Setter>
+            </Style.Setters>
+        </Style>
 
     </Window.Resources>
     <Grid Margin="5">
@@ -92,7 +99,7 @@
                     </MultiBinding>
                 </Grid.Visibility>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="3*"></RowDefinition>
+                    <RowDefinition Height="3.2*"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
@@ -104,17 +111,17 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2.4*"></ColumnDefinition>
-                    <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                    <ColumnDefinition Width="1.4*"></ColumnDefinition>
                     <ColumnDefinition Width="0.2*"></ColumnDefinition>
-                    <ColumnDefinition Width="1.1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Image Source="Images/Logo.png" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></Image>
-                <TextBlock x:Name="chineseName" Text="{Binding Path=中文名称,Mode=OneWay}" Style="{StaticResource AddressStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"></TextBlock>
+                <Image Source="Images/Logo.jpg" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></Image>
+                <TextBlock x:Name="chineseName" Text="{Binding Path=中文名称,Mode=OneWay}" Style="{StaticResource NameStyle2}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"></TextBlock>
                 <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
 
                     <TextBlock Text="{Binding Path=货号,Mode=OneWay}" FontWeight="Bold" Margin="5 0 5 0" FontSize="12"></TextBlock>
@@ -171,11 +178,11 @@
                     <TextBlock Text="{Binding Path=Inches,Mode=OneWay}" Grid.Row="1" Grid.Column="4"></TextBlock>
                 </Grid>
 
-                <TextBlock Text="代理商：" Grid.Row="6" Grid.Column="3" Style="{StaticResource AddressStyle}"></TextBlock>
+                <TextBlock Text="代理商:" Grid.Row="6" Grid.Column="3" Style="{StaticResource AddressStyle}"></TextBlock>
                 <TextBlock Text="北京群冠国际贸易有限公司" Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="5" Style="{StaticResource AddressStyle}"></TextBlock>
-                <TextBlock Text="地   址：" Grid.Row="7" Grid.Column="3" Style="{StaticResource AddressStyle}"></TextBlock>
+                <TextBlock Text="地   址:" Grid.Row="7" Grid.Column="3" Style="{StaticResource AddressStyle}"></TextBlock>
                 <TextBlock Text="北京市朝阳区第三置业大厦A座2901室" Grid.Row="7" Grid.Column="4" Grid.ColumnSpan="5" Style="{StaticResource AddressStyle}"></TextBlock>
-                <TextBlock Text="电   话：" Grid.Row="8" Grid.Column="3" Style="{StaticResource AddressStyle}"></TextBlock>
+                <TextBlock Text="电   话:" Grid.Row="8" Grid.Column="3" Style="{StaticResource AddressStyle}"></TextBlock>
                 <TextBlock Text="010-58221273" Grid.Row="8" Grid.Column="4" Grid.ColumnSpan="5" Style="{StaticResource AddressStyle}"></TextBlock>
 
             </Grid>
@@ -208,7 +215,7 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Image Source="Images/Logo.png" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></Image>
+                <Image Source="Images/Logo.jpg" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></Image>
                 <TextBlock x:Name="englishName" Text="{Binding Path=英文名称,Mode=OneWay}" Style="{StaticResource NameStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9"></TextBlock>
 
                 <TextBlock FontWeight="Bold" Margin="5 0 5 0" FontSize="9" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">

@@ -101,7 +101,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BusinessLib\BoolToVisiblityConverter.cs" />
-    <Compile Include="BusinessLib\TextChangeCommand.cs" />
     <Compile Include="CommonLib\GridHelper.cs" />
     <Compile Include="CommonLib\PrintHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -142,12 +141,11 @@
     <Resource Include="Images\image007.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Logo.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\image005.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Logo.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

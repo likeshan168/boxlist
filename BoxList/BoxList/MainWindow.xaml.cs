@@ -1,10 +1,10 @@
 ﻿using BoxList.CommonLib;
 using BoxList.ViewModels;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace BoxList
 {
@@ -13,6 +13,8 @@ namespace BoxList
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        private bool isValid = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -22,68 +24,85 @@ namespace BoxList
         {
             if (!string.IsNullOrWhiteSpace(code.Text))
             {
-                //isCheckIn = (bool)rbtnCheckIn.IsChecked;
-                //barCode = code.Text;
 
-                Task.Factory.StartNew(() => { return SetDataContext(); })
-                    .ContinueWith((rst) =>
-                    {
-                        if (rst.Result)
-                        {
-                            //PrintLabel();
-                        }
-                    });
+                Task.Factory.StartNew(() => {  SetDataContext(); })
+                           .ContinueWith((rst) =>
+                           {
+                               if (isValid)
+                               {
+                                   PrintLabel();
+                                   Console.WriteLine("打印");
+                               }
+                           });
 
                 Console.WriteLine("complete!");
             }
         }
 
-        private bool SetDataContext()
+        private void SetDataContext()
         {
-            Dispatcher.BeginInvoke(new Func<bool>(() =>
-            {
-                Console.WriteLine("获取数据...!");
-                Msg.Text = "获取数据...";
-                //Thread.Sleep(4000);
-                bool isCheckIn = (bool)rbtnCheckIn.IsChecked;
-                string barCode = code.Text;
-                var printLabel = new DbOperation().GetPrintLabel(isCheckIn, barCode);
 
-                if (printLabel == null)
+            Dispatcher.Invoke(new Func<bool>(() =>
+            {
+                try
                 {
+                    Console.WriteLine("获取数据...!");
+                    Msg.Text = "获取数据...";
+                    bool isCheckIn = (bool)rbtnCheckIn.IsChecked;
+                    string barCode = code.Text;
+                    var printLabel = new DbOperation().GetPrintLabel(isCheckIn, barCode);
+
+                    if (printLabel == null)
+                    {
+                        Msg.Text = "没有找到对应的数据";
+                        isValid = false;
+                        return false;
+                    }
+
+                    if (isCheckIn)
+                    {
+                        boxImage1.DataContext = printLabel;
+                    }
+                    else
+                    {
+                        boxImage2.DataContext = printLabel;
+                    }
+                   
+                    Msg.Text = "数据获取完成";
+                    isValid = true;
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    isValid = false;
                     return false;
                 }
-
-                if (isCheckIn)
-                {
-                    boxImage1.DataContext = printLabel;
-                }
-                else
-                {
-                    boxImage2.DataContext = printLabel;
-                }
-                Console.WriteLine("数据获取完成");
-                Msg.Text = "数据获取完成";
-
-                return true;
-            }));
-
-            return true;
+            }), DispatcherPriority.Background);
         }
 
         private void PrintLabel()
         {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                Console.WriteLine("正在打印...");
-                Msg.Text = "正在打印...";
-                bool isCheckIn = (bool)rbtnCheckIn.IsChecked;
-                new PrintHelper().PrintVisual(isCheckIn ? boxImage1 : boxImage2);
-                Console.WriteLine("打印完成");
-                Msg.Text = "打印完成";
-                Console.WriteLine("扫描打印");
-                Msg.Text = "扫描打印";
-            }));
+
+            Dispatcher.Invoke(new Action(() =>
+               {
+                   try
+                   {
+                       Console.WriteLine("正在打印...");
+                       Msg.Text = "正在打印...";
+                       bool isCheckIn = (bool)rbtnCheckIn.IsChecked;
+                       new PrintHelper().PrintVisual(isCheckIn ? boxImage1 : boxImage2);
+                       Console.WriteLine("打印完成");
+                       Msg.Text = "打印完成";
+                       code.Text = "";
+                   }
+                   catch (Exception ex)
+                   {
+                       MessageBox.Show(ex.Message);
+                   }
+               }), DispatcherPriority.Background);
+
+
         }
     }
 }
