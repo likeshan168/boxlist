@@ -20,6 +20,8 @@ namespace BoxList.BusinessLib
             Db = ConfigHelper.Instance.GetConnectionStringsConfigValue(Constants.BOXLISTCONFIGFILENAME, Constants.DB);
             LabelSql = ConfigHelper.Instance.GetAppSettingsConfigValue(Constants.BOXLISTCONFIGFILENAME, Constants.LABELSQL);
             JingDongLabelSql = ConfigHelper.Instance.GetAppSettingsConfigValue(Constants.BOXLISTCONFIGFILENAME, Constants.JINGDONGLABELSQL);
+            XpsForBaseLabel = ConfigHelper.Instance.GetAppSettingsConfigValue(Constants.BOXLISTCONFIGFILENAME, Constants.XPSFORBASELABEL);
+            XpsForJingDongLabel = ConfigHelper.Instance.GetAppSettingsConfigValue(Constants.BOXLISTCONFIGFILENAME, Constants.XPSFORJINGDONGLABEL);
         }
 
         public string ProductImagePath { get; }
@@ -31,6 +33,8 @@ namespace BoxList.BusinessLib
         public string Db { get; }
         public string LabelSql { get; }
         public string JingDongLabelSql { get; }
+        public string XpsForBaseLabel { get; }
+        public string XpsForJingDongLabel { get; }
 
     }
 }

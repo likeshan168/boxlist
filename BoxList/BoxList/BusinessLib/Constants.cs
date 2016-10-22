@@ -17,6 +17,8 @@ namespace BoxList.BusinessLib
         public const string JINGDONGBARCODEIMAGEEXT = "JingDongBarCodeImageExt";
         public const string LABELSQL = "LabelSql";
         public const string JINGDONGLABELSQL = "JingDongLabelSql";
+        public const string XPSFORBASELABEL = "XpsForBaseLabel";
+        public const string XPSFORJINGDONGLABEL = "XpsForJingDongLabel";
 
         #endregion
 
