@@ -98,7 +98,23 @@ namespace BoxList
                        Console.WriteLine("正在打印...");
                        Msg.Text = "正在打印...";
                        bool isCheckIn = (bool)rbtnCheckIn.IsChecked;
-                       new PrintHelper().PrintVisual(isCheckIn ? boxImage1 : boxImage2);
+
+                       //讲表格保存为xps文件已供打印和预览
+                       string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "xps");
+                       if (!Directory.Exists(path))
+                       {
+                           Directory.CreateDirectory(path);
+                       }
+
+                       Uri uri = new Uri(Path.Combine(path, (bool)rbtnCheckIn.IsChecked ? ConfigEntry.Instance.XpsForBaseLabel : ConfigEntry.Instance.XpsForJingDongLabel));
+                       Export(uri, isCheckIn ? boxImage1 : boxImage2);
+                       ExportToPng(new Uri(Path.Combine(path, isCheckIn ? "one.png" : "two.png")), isCheckIn ? boxImage1 : boxImage2);
+
+                       //第一种方式
+                       //new PrintHelper().PrintVisual(isCheckIn ? boxImage1 : boxImage2);
+                       //第二种方式
+                       new PrintHelper().PrintDoc(isCheckIn ? boxImage1 : boxImage2, isCheckIn);
+
                        Console.WriteLine("打印完成");
                        Msg.Text = "打印完成";
                        code.Text = "";
@@ -114,21 +130,22 @@ namespace BoxList
 
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
-            //Uri uri = new Uri(@"C:\Users\hiand\Desktop\test\one.png");
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "xps");
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
+            //string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "xps");
+            //if (!Directory.Exists(path))
+            //{
+            //    Directory.CreateDirectory(path);
+            //}
 
-            Uri uri = new Uri(Path.Combine(path, (bool)rbtnCheckIn.IsChecked ? ConfigEntry.Instance.XpsForBaseLabel : ConfigEntry.Instance.XpsForJingDongLabel));
-            Export(uri, (bool)rbtnCheckIn.IsChecked ? boxImage1 : boxImage2);
+            //Uri uri = new Uri(Path.Combine(path, (bool)rbtnCheckIn.IsChecked ? ConfigEntry.Instance.XpsForBaseLabel : ConfigEntry.Instance.XpsForJingDongLabel));
+            //Export(uri, (bool)rbtnCheckIn.IsChecked ? boxImage1 : boxImage2);
 
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "xps", (bool)rbtnCheckIn.IsChecked ? ConfigEntry.Instance.XpsForBaseLabel : ConfigEntry.Instance.XpsForJingDongLabel);
 
-            using (XpsDocument doc = new XpsDocument(uri.LocalPath, FileAccess.Read))
+            using (XpsDocument doc = new XpsDocument(path, FileAccess.Read))
             {
                 DocumentViewer docV = new DocumentViewer();
                 docV.Document = doc.GetFixedDocumentSequence();
+
                 Window page = new Window();
                 page.Content = docV;
                 page.Show();
@@ -166,6 +183,29 @@ namespace BoxList
                 encoder.Save(outStream);
             }
             surface.LayoutTransform = transform;
+
+
+
+            //DrawingVisual drawingVisual = new DrawingVisual();
+            //using (DrawingContext context = drawingVisual.RenderOpen())
+            //{
+            //    VisualBrush brush = new VisualBrush(surface) { Stretch = Stretch.None };
+            //    context.DrawRectangle(brush, null, new Rect(0, 0, surface.Width, surface.Height));
+            //    context.Close();
+            //}
+
+            ////dpi可以自己设定   // 获取dpi方法：PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice
+            //RenderTargetBitmap bitmap = new RenderTargetBitmap((int)surface.Width, (int)surface.Height, 96, 96, PixelFormats.Pbgra32);
+            //bitmap.Render(drawingVisual);
+
+            //using (FileStream outStream = new FileStream(path.LocalPath, FileMode.OpenOrCreate))
+            //{
+            //    PngBitmapEncoder encoder = new PngBitmapEncoder();
+            //    encoder.Frames.Add(BitmapFrame.Create(bitmap));
+            //    encoder.Save(outStream);
+            //}
+
+
         }
 
         public void Export(Uri path, Grid surface)

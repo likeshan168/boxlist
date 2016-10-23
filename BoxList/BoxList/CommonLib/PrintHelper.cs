@@ -15,6 +15,7 @@ namespace BoxList.CommonLib
 {
     public class PrintHelper
     {
+        private bool isCheckedIn = true;
         public PrintHelper()
         {
         }
@@ -40,8 +41,43 @@ namespace BoxList.CommonLib
             if (printQueue != null)
             {
                 printDialog.PrintQueue = printQueue;
+                
                 printDialog.PrintVisual(element, "");
             }
+        }
+
+        public void PrintDoc(FrameworkElement element,bool isCheckedIn)
+        {
+            this.isCheckedIn = isCheckedIn;
+
+            PrintDocument printDoc = new PrintDocument();
+            PaperSize paperSize = new PaperSize();
+
+            //设置页边距
+            printDoc.PrinterSettings.DefaultPageSettings.Margins.Left = 0;
+            printDoc.PrinterSettings.DefaultPageSettings.Margins.Top = 0;
+            printDoc.PrinterSettings.DefaultPageSettings.Margins.Right = 0;
+            printDoc.PrinterSettings.DefaultPageSettings.Margins.Bottom = 0;
+            //设置尺寸大小，如不设置默认是A4纸
+            //A4纸的尺寸是210mm×297mm，
+            //当你设定的分辨率是72像素/英寸时，A4纸的尺寸的图像的像素是595×842
+            //当你设定的分辨率是150像素/英寸时，A4纸的尺寸的图像的像素是1240×1754
+            //当你设定的分辨率是300像素/英寸时，A4纸的尺寸的图像的像素是2479×3508，
+
+            paperSize.RawKind = 0;
+            paperSize.Width = (int)element.ActualWidth;
+            paperSize.Height = (int)element.ActualHeight;
+            printDoc.DefaultPageSettings.PaperSize = paperSize;
+            printDoc.PrintPage += PrintDoc_PrintPage;
+            printDoc.Print();
+            
+        }
+
+        private void PrintDoc_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            // e.Graphics.
+            e.Graphics.DrawImage(System.Drawing.Image.FromFile(isCheckedIn? @"./xps/one.png":@"./xps/two.png"),e.Graphics.VisibleClipBounds);
+            e.HasMorePages = false;
         }
 
         /// <summary>
