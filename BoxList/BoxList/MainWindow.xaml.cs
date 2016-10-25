@@ -20,7 +20,7 @@ namespace BoxList
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        private string barCode = string.Empty;
         private bool isValid = false;
         public MainWindow()
         {
@@ -29,9 +29,15 @@ namespace BoxList
 
         private void code_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(code.Text))
+            int codeLength;
+            if (!int.TryParse(CodeLength.Text, out codeLength))
             {
-
+                MessageBox.Show("条形码的位数只能为数字！");
+                return;
+            }
+            if (!string.IsNullOrWhiteSpace(code.Text) && (code.Text.Length == codeLength))
+            {
+                barCode = code.Text;
                 Task.Factory.StartNew(() => { SetDataContext(); })
                            .ContinueWith((rst) =>
                            {
@@ -56,13 +62,14 @@ namespace BoxList
                     Console.WriteLine("获取数据...!");
                     Msg.Text = "获取数据...";
                     bool isCheckIn = (bool)rbtnCheckIn.IsChecked;
-                    string barCode = code.Text.Trim();
+                    
                     var printLabel = new DbOperation().GetPrintLabel(isCheckIn, barCode);
 
                     if (printLabel == null)
                     {
                         Msg.Text = "没有找到对应的数据";
                         isValid = false;
+                        code.SelectAll();
                         return false;
                     }
 
@@ -111,13 +118,13 @@ namespace BoxList
                        ExportToPng(new Uri(Path.Combine(path, isCheckIn ? "one.png" : "two.png")), isCheckIn ? boxImage1 : boxImage2);
 
                        //第一种方式
-                       //new PrintHelper().PrintVisual(isCheckIn ? boxImage1 : boxImage2);
+                       new PrintHelper().PrintVisual(isCheckIn ? boxImage1 : boxImage2);
                        //第二种方式
-                       new PrintHelper().PrintDoc(isCheckIn ? boxImage1 : boxImage2, isCheckIn);
+                       //new PrintHelper().PrintDoc(isCheckIn ? boxImage1 : boxImage2, isCheckIn);
 
                        Console.WriteLine("打印完成");
                        Msg.Text = "打印完成";
-                       code.Text = "";
+                       code.SelectAll();
                    }
                    catch (Exception ex)
                    {
@@ -130,15 +137,6 @@ namespace BoxList
 
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
-            //string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "xps");
-            //if (!Directory.Exists(path))
-            //{
-            //    Directory.CreateDirectory(path);
-            //}
-
-            //Uri uri = new Uri(Path.Combine(path, (bool)rbtnCheckIn.IsChecked ? ConfigEntry.Instance.XpsForBaseLabel : ConfigEntry.Instance.XpsForJingDongLabel));
-            //Export(uri, (bool)rbtnCheckIn.IsChecked ? boxImage1 : boxImage2);
-
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "xps", (bool)rbtnCheckIn.IsChecked ? ConfigEntry.Instance.XpsForBaseLabel : ConfigEntry.Instance.XpsForJingDongLabel);
 
             using (XpsDocument doc = new XpsDocument(path, FileAccess.Read))
@@ -161,50 +159,33 @@ namespace BoxList
             if (path == null) return;
 
             Transform transform = surface.LayoutTransform;
+            surface.UseLayoutRounding = true;
             surface.LayoutTransform = null;
 
             Size size = new Size(surface.Width, surface.Height);
             surface.Measure(size);
             surface.Arrange(new Rect(size));
 
-            RenderTargetBitmap renderBitmap =
-            new RenderTargetBitmap(
-            (int)size.Width,
-            (int)size.Height,
-            96d,
-            96d,
-            PixelFormats.Pbgra32);
-            renderBitmap.Render(surface);
+
+            //PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice.Transform.x
+
 
             using (FileStream outStream = new FileStream(path.LocalPath, FileMode.OpenOrCreate))
             {
+                System.Drawing.Graphics graphics = System.Drawing.Graphics.FromHwnd(IntPtr.Zero);
+                RenderTargetBitmap renderBitmap =
+                   new RenderTargetBitmap(
+                   (int)size.Width,
+                   (int)size.Height,
+                   graphics.DpiX,
+                   graphics.DpiY,
+                   PixelFormats.Pbgra32);
+                renderBitmap.Render(surface);
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
                 encoder.Save(outStream);
             }
             surface.LayoutTransform = transform;
-
-
-
-            //DrawingVisual drawingVisual = new DrawingVisual();
-            //using (DrawingContext context = drawingVisual.RenderOpen())
-            //{
-            //    VisualBrush brush = new VisualBrush(surface) { Stretch = Stretch.None };
-            //    context.DrawRectangle(brush, null, new Rect(0, 0, surface.Width, surface.Height));
-            //    context.Close();
-            //}
-
-            ////dpi可以自己设定   // 获取dpi方法：PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice
-            //RenderTargetBitmap bitmap = new RenderTargetBitmap((int)surface.Width, (int)surface.Height, 96, 96, PixelFormats.Pbgra32);
-            //bitmap.Render(drawingVisual);
-
-            //using (FileStream outStream = new FileStream(path.LocalPath, FileMode.OpenOrCreate))
-            //{
-            //    PngBitmapEncoder encoder = new PngBitmapEncoder();
-            //    encoder.Frames.Add(BitmapFrame.Create(bitmap));
-            //    encoder.Save(outStream);
-            //}
-
 
         }
 
