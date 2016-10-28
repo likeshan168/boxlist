@@ -45,6 +45,14 @@
                 <Setter Property="HorizontalAlignment" Value="Center"></Setter>
             </Style.Setters>
         </Style>
+        <Style x:Key="SizeStyleSmall" TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="FontSize" Value="16" ></Setter>
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                <Setter Property="FontWeight" Value="Bold" ></Setter>
+                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            </Style.Setters>
+        </Style>
 
         <Style x:Key="AddressStyle" TargetType="TextBlock">
             <Style.Setters>
@@ -79,7 +87,7 @@
             <ColumnDefinition Width="260*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Margin="5,5,5,5" Grid.Row="0">
-            <GroupBox Header="扫码" Width="630">
+            <GroupBox Header="扫码" Width="620">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <RadioButton x:Name="rbtnCheckIn" GroupName="scan" VerticalAlignment="Center" Margin="2" IsChecked="True">入库扫码</RadioButton>
                     <RadioButton x:Name="rbtnCheckOut" GroupName="scan" VerticalAlignment="Center" Margin="2">京东扫码</RadioButton>
@@ -90,7 +98,7 @@
                     </TextBlock>
                     <TextBox x:Name="CodeLength" Height="23" Width="40" Margin="2" Text="13"></TextBox>
                     <TextBlock Text="条形码位数"></TextBlock>
-                    <Button Height="30" Width="100" Content="打印预览" x:Name="btnPrint" Click="btnPrint_Click"></Button>
+                    <!--<Button Height="30" Width="100" Content="打印预览" x:Name="btnPrint" Click="btnPrint_Click"></Button>-->
                 </StackPanel>
             </GroupBox>
         </StackPanel>
@@ -186,9 +194,9 @@
 
                     <TextBlock Text="代理商:" Grid.Row="6" Grid.Column="3" Style="{StaticResource AddressStyle}"></TextBlock>
                     <TextBlock Text="北京群冠国际贸易有限公司" Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="5" Style="{StaticResource AddressStyle}"></TextBlock>
-                    <TextBlock Text="地  址:" Grid.Row="7" Grid.Column="3" Style="{StaticResource AddressStyle}"></TextBlock>
+                    <TextBlock Text="地   址:" Grid.Row="7" Grid.Column="3" Style="{StaticResource AddressStyle}"></TextBlock>
                     <TextBlock Text="北京市朝阳区第三置业大厦A座2901室" Grid.Row="7" Grid.Column="4" Grid.ColumnSpan="5" Style="{StaticResource AddressStyle}"></TextBlock>
-                    <TextBlock Text="电  话:" Grid.Row="8" Grid.Column="3" Style="{StaticResource AddressStyle}"></TextBlock>
+                    <TextBlock Text="电   话:" Grid.Row="8" Grid.Column="3" Style="{StaticResource AddressStyle}"></TextBlock>
                     <TextBlock Text="010-58221273" Grid.Row="8" Grid.Column="4" Grid.ColumnSpan="5" Style="{StaticResource AddressStyle}"></TextBlock>
 
                 </Grid>
@@ -227,7 +235,7 @@
                     <Image Source="Images/Logo.jpg" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"></Image>
                     <TextBlock x:Name="englishName" Text="{Binding Path=英文名称,Mode=OneWay}" Style="{StaticResource NameStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9"></TextBlock>
 
-                    <TextBlock FontWeight="Bold" Margin="5 0 5 0" FontSize="8" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                    <TextBlock FontWeight="Bold" Margin="5 0 5 0" HorizontalAlignment="Left" FontSize="8" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0}/{1}" >
                                 <Binding Path="货号" Mode="OneWay"></Binding>
@@ -238,8 +246,8 @@
 
 
                     <Image Source="{Binding Path=鞋图名称,Mode=OneWay,Converter={StaticResource itop}}" Grid.Row="3" Grid.Column="0" Grid.RowSpan="3" Width="50" Height="50"></Image>
-                    <TextBlock Text="{Binding Path=EU,Mode=OneWay}" Style="{StaticResource SizeStyle}" Grid.Row="3" Grid.Column="1" Grid.RowSpan="3"></TextBlock>
-
+                    <TextBlock Text="{Binding Path=EU,Mode=OneWay}" Style="{StaticResource SizeStyleSmall}" Grid.Row="3" Grid.Column="1" Grid.RowSpan="3"></TextBlock>
+                    
                     <Image Source="{Binding Path=条形码,Mode=OneWay,Converter={StaticResource btop}}" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="7" Grid.RowSpan="2"></Image>
 
                     <Grid Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="7" Grid.RowSpan="4" Margin="1">

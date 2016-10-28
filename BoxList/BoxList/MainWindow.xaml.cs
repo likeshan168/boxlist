@@ -114,8 +114,8 @@ namespace BoxList
                        }
 
                        Uri uri = new Uri(Path.Combine(path, (bool)rbtnCheckIn.IsChecked ? ConfigEntry.Instance.XpsForBaseLabel : ConfigEntry.Instance.XpsForJingDongLabel));
-                       Export(uri, isCheckIn ? boxImage1 : boxImage2);
-                       ExportToPng(new Uri(Path.Combine(path, isCheckIn ? "one.png" : "two.png")), isCheckIn ? boxImage1 : boxImage2);
+                       //Export(uri, isCheckIn ? boxImage1 : boxImage2);
+                       //ExportToPng(new Uri(Path.Combine(path, isCheckIn ? "one.png" : "two.png")), isCheckIn ? boxImage1 : boxImage2);
 
                        //第一种方式
                        new PrintHelper().PrintVisual(isCheckIn ? boxImage1 : boxImage2);
