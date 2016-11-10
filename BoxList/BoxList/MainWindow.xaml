@@ -7,7 +7,7 @@
         xmlns:comlib="clr-namespace:BoxList.CommonLib"
         xmlns:blib="clr-namespace:BoxList.BusinessLib"
         mc:Ignorable="d"
-        Title="扫码工具" Height="350" Width="650" TextOptions.TextFormattingMode="Display">
+        Title="扫码工具" Height="500" Width="650" TextOptions.TextFormattingMode="Display">
     <Window.Resources>
         <ObjectDataProvider x:Key="printer" ObjectType="{x:Type comlib:PrintHelper}" MethodName="GetLocalPrinters">
         </ObjectDataProvider>
@@ -81,6 +81,7 @@
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="97*"/>
+            <RowDefinition Height="180*"/>
             <RowDefinition Height="222*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -301,6 +302,9 @@
 
             
         </Grid>
+        <StackPanel x:Name="bigImage" Grid.Row="2">
+            <Image Source="{Binding Path=鞋图名称,Mode=OneWay,Converter={StaticResource itop}}" Width="200" Height="200" Margin="5"></Image>
+        </StackPanel>
 
     </Grid>
 </Window>

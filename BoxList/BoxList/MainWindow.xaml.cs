@@ -76,9 +76,11 @@ namespace BoxList
                     if (isCheckIn)
                     {
                         boxImage1.DataContext = printLabel;
+                        bigImage.DataContext = printLabel;
                     }
                     else
                     {
+                        bigImage.DataContext = printLabel;
                         boxImage2.DataContext = printLabel;
                     }
 
