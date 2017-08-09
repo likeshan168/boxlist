@@ -35,6 +35,7 @@ namespace BoxList
                 MessageBox.Show("条形码的位数只能为数字！");
                 return;
             }
+            
             if (!string.IsNullOrWhiteSpace(code.Text) && (code.Text.Length == codeLength))
             {
                 barCode = code.Text;
@@ -213,6 +214,25 @@ namespace BoxList
                 doc.Close();
                 package.Close();
                 surface.LayoutTransform = transform;
+            }
+        }
+
+        private void code_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                barCode = code.Text;
+                Task.Factory.StartNew(() => { SetDataContext(); })
+                           .ContinueWith((rst) =>
+                           {
+                               if (isValid)
+                               {
+                                   PrintLabel();
+                                   Console.WriteLine("打印");
+                               }
+                           });
+
+                Console.WriteLine("complete!");
             }
         }
     }

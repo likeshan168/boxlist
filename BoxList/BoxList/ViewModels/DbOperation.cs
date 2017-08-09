@@ -8,6 +8,8 @@ using System.Data;
 using System.Data.OleDb;
 using BoxList.Models;
 using BoxList.BusinessLib;
+using System.Data.Common;
+using System.Data.SqlClient;
 
 namespace BoxList.ViewModels
 {
@@ -15,7 +17,8 @@ namespace BoxList.ViewModels
     {
         public IDbConnection GetSqlConnection()
         {
-            return new OleDbConnection(ConfigEntry.Instance.Db);
+            //return new OleDbConnection(ConfigEntry.Instance.Db);
+            return new SqlConnection(ConfigEntry.Instance.Db);
         }
 
         public PrintLabelEnhanced GetPrintLabel(bool isCheckIn, string code)

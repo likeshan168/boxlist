@@ -93,12 +93,12 @@
                     <RadioButton x:Name="rbtnCheckIn" GroupName="scan" VerticalAlignment="Center" Margin="2" IsChecked="True">入库扫码</RadioButton>
                     <RadioButton x:Name="rbtnCheckOut" GroupName="scan" VerticalAlignment="Center" Margin="2">京东扫码</RadioButton>
                     
-                    <TextBox x:Name="code" Height="23" Width="160" Margin="2" TextChanged="code_TextChanged"></TextBox>
+                    <TextBox x:Name="code" Height="23" Width="160" Margin="2" KeyUp="code_KeyUp"></TextBox>
                     
                     <TextBlock x:Name="Msg" Text="扫码打印标签">
                     </TextBlock>
-                    <TextBox x:Name="CodeLength" Height="23" Width="40" Margin="2" Text="13"></TextBox>
-                    <TextBlock Text="条形码位数"></TextBlock>
+                    <TextBox x:Name="CodeLength" Height="23" Width="40" Margin="2" Text="13" Visibility="Hidden"></TextBox>
+                    <TextBlock Text="条形码位数" Visibility="Hidden"></TextBlock>
                     <!--<Button Height="30" Width="100" Content="打印预览" x:Name="btnPrint" Click="btnPrint_Click"></Button>-->
                 </StackPanel>
             </GroupBox>
@@ -303,7 +303,7 @@
             
         </Grid>
         <StackPanel x:Name="bigImage" Grid.Row="2">
-            <Image Source="{Binding Path=鞋图名称,Mode=OneWay,Converter={StaticResource itop}}" Width="200" Height="200" Margin="5"></Image>
+            <Image Source="{Binding Path=鞋图名称,Mode=OneWay,Converter={StaticResource itop}}" Width="150" Height="150" Margin="30"></Image>
         </StackPanel>
 
     </Grid>
